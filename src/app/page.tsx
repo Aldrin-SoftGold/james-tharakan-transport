@@ -4,7 +4,6 @@ import { FounderStory } from "@/components/sections/FounderStory";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { MaterialsSection } from "@/components/sections/MaterialsSection";
 import { RouteMap } from "@/components/sections/RouteMap";
-import { FleetSection } from "@/components/sections/FleetSection";
 import { WhyUsSection } from "@/components/sections/WhyUsSection";
 import { IndustriesSection } from "@/components/sections/IndustriesSection";
 import { QuoteForm } from "@/components/sections/QuoteForm";
@@ -19,7 +18,6 @@ export default function HomePage() {
       <ServicesSection />
       <MaterialsSection />
       <RouteMap />
-      <FleetSection />
       <WhyUsSection />
       <IndustriesSection />
       <QuoteForm />

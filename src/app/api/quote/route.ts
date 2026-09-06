@@ -33,7 +33,8 @@ export async function POST(request: Request) {
       ],
     });
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (error) {
+    console.error("Quote delivery failed", error);
     return NextResponse.json({ error: "Delivery failed" }, { status: 502 });
   }
 }

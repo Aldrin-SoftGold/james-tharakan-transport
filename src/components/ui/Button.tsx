@@ -29,15 +29,25 @@ export function Button({
   }[variant];
 
   const classNames = cn(
-    "group inline-flex items-center gap-3 px-6 py-3.5 text-[0.72rem] font-semibold tracking-[0.16em] uppercase rounded-[4px]",
+    "group inline-flex items-center justify-center gap-3 w-full sm:w-auto px-6 py-3.5 text-[0.72rem] font-semibold tracking-[0.16em] uppercase rounded-[4px]",
     styles,
     className,
   );
 
   return (
-    <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}>
+    <motion.div
+      className="w-full sm:w-auto"
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+    >
       {external ? (
-        <a href={href} className={classNames}>
+        <a
+          href={href}
+          className={classNames}
+          {...(href.startsWith("https://") || href.startsWith("http://")
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+        >
           {children}
           <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden>
             →

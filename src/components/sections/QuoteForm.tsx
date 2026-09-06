@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { primaryPhone } from "@/data/company";
 import { materials } from "@/data/materials";
 import { quoteSchema } from "@/lib/validation";
@@ -9,6 +9,7 @@ import { DateField } from "@/components/ui/DateField";
 import { SelectField } from "@/components/ui/SelectField";
 import { EmailInput, PhoneInput } from "@/components/ui/ConstrainedInputs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { scrollToElement } from "@/lib/scroll";
 
 const cargoOptions = [
   ...materials.map((m) => m.name),
@@ -23,6 +24,11 @@ export function QuoteForm({ compact = false }: { compact?: boolean }) {
   const startedAt = useMemo(() => String(Date.now()), []);
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (status !== "success" && Object.keys(errors).length === 0) return;
+    scrollToElement("quote");
+  }, [status, errors]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -51,21 +57,42 @@ export function QuoteForm({ compact = false }: { compact?: boolean }) {
       setStatus("success");
       e.currentTarget.reset();
     } catch {
-      setStatus("error");
+      const data = parsed.data;
+      const text = [
+        `Quote request from ${data.name}`,
+        `Cargo: ${data.cargoType}`,
+        `Weight / volume: ${data.weightVolume}`,
+        `Pickup: ${data.pickup}`,
+        `Delivery: ${data.delivery}`,
+        `Date: ${data.date}`,
+        `Phone: ${data.phone}`,
+        `Email: ${data.email}`,
+      ].join("\n");
+      window.open(
+        `https://wa.me/971569161225?text=${encodeURIComponent(text)}`,
+        "_blank",
+        "noopener,noreferrer",
+      );
+      setStatus("success");
     }
   }
 
   if (status === "success") {
     return (
-      <section id="quote" className={compact ? "" : "bg-offwhite py-24 md:py-32"}>
-        <div className={compact ? "" : "site-grid max-w-3xl"}>
-          <p className="label text-ochre">Quote request received</p>
+      <section
+        id="quote"
+        className={compact ? "py-6" : "bg-offwhite py-24 md:py-32"}
+        role="status"
+        aria-live="polite"
+      >
+        <div className={compact ? "max-w-2xl" : "site-grid max-w-3xl"}>
+          <p className="label text-ochre">Acknowledgement</p>
           <h2 className="display text-[clamp(2.1rem,4.4vw,3.7rem)] mt-4">
-            Thank you.
+            Quote has been sent.
           </h2>
           <p className="lede mt-6">
-            Your transport requirement has been received. The team will review the
-            details and contact you.
+            Your quote request has been sent. We will review the details and contact
+            you.
           </p>
           <div className="mt-10">
             <Button href="/" variant="ghost">
@@ -78,8 +105,8 @@ export function QuoteForm({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <section id="quote" className={compact ? "" : "bg-offwhite py-24 md:py-32"}>
-      <div className={compact ? "" : "site-grid grid gap-14 lg:grid-cols-12"}>
+    <section id="quote" className={compact ? "" : "bg-offwhite py-16 md:py-24 lg:py-32"}>
+      <div className={compact ? "" : "site-grid grid gap-10 lg:grid-cols-12 lg:gap-14"}>
         {!compact ? (
           <div className="lg:col-span-5">
             <SectionHeading
@@ -95,7 +122,7 @@ export function QuoteForm({ compact = false }: { compact?: boolean }) {
         ) : null}
         <form
           onSubmit={onSubmit}
-          className={compact ? "mt-10 space-y-7" : "lg:col-span-7 space-y-7"}
+          className={compact ? "mt-6 md:mt-10 space-y-5 md:space-y-7" : "lg:col-span-7 space-y-5 md:space-y-7"}
           noValidate
         >
           <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
@@ -147,7 +174,7 @@ export function QuoteForm({ compact = false }: { compact?: boolean }) {
           <button
             type="submit"
             disabled={status === "submitting"}
-            className="inline-flex items-center gap-3 bg-royal text-white text-[0.72rem] tracking-[0.16em] uppercase font-semibold px-7 py-4 rounded-[4px] hover:-translate-y-0.5 transition-transform disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-3 w-full sm:w-auto bg-royal text-white text-[0.72rem] tracking-[0.16em] uppercase font-semibold px-7 py-4 rounded-[4px] hover:-translate-y-0.5 transition-transform disabled:opacity-60"
           >
             {status === "submitting" ? "Sending…" : "Request a Quote"}
             <span aria-hidden>→</span>

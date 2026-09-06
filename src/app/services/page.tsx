@@ -6,7 +6,7 @@ import { PageHero } from "@/components/sections/PageHero";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Heavy truck cargo transport, raw and building materials movement, and project site deliveries from Dubai across the UAE, Oman, Saudi Arabia and the GCC.",
+    "Road transport across the GCC. Any cargo, specialised in building raw materials. UAE, Oman, Saudi Arabia, Qatar, Kuwait and Bahrain.",
 };
 
 export default function ServicesPage() {
@@ -16,7 +16,7 @@ export default function ServicesPage() {
         eyebrow="Services"
         title="Road transport"
         titleLine2="for the load."
-        lede="Four lines of work: heavy cargo, building materials, cross-border movement across the UAE, Oman, Saudi Arabia and the GCC, and project site deliveries."
+        lede="Any cargo, specialised in building raw materials. The company operates across the GCC: UAE, Oman, Saudi Arabia, Qatar, Kuwait and Bahrain."
       />
       <ServicesSection showHeading={false} />
       <MaterialsSection />

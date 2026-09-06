@@ -13,6 +13,8 @@ export async function deliverEmail(payload: Payload) {
   const to = process.env.QUOTE_TO_EMAIL || company.email;
   const text = formatBody(payload);
 
+  await archiveEnquiry(payload);
+
   const smtpHost = process.env.SMTP_HOST;
   if (smtpHost) {
     const nodemailer = await import("nodemailer");
@@ -53,24 +55,25 @@ export async function deliverEmail(payload: Payload) {
     return;
   }
 
-  try {
-    const formRes = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(to)}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        _subject: payload.subject,
-        ...Object.fromEntries(payload.lines),
-      }),
-    });
-    if (formRes.ok) return;
-  } catch {
-    // fall through to local archive
+  const formRes = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(to)}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      _subject: payload.subject,
+      _captcha: "false",
+      _template: "table",
+      name: payload.lines.find(([key]) => key === "Name")?.[1] || "Website enquiry",
+      email: payload.lines.find(([key]) => key === "Email")?.[1] || to,
+      message: text,
+      ...Object.fromEntries(payload.lines),
+    }),
+  });
+  if (!formRes.ok) {
+    /* enquiry is already archived */
   }
-
-  await archiveEnquiry(payload);
 }
 
 async function archiveEnquiry(payload: Payload) {

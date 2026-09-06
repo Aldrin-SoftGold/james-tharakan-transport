@@ -22,9 +22,9 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
-const title = "James Tharakan Transport L.L.C | Heavy Cargo Transport UAE, Oman, Saudi Arabia & GCC";
+const title = "James Tharakan Transport L.L.C | GCC Road Transport — Building Raw Materials";
 const description =
-  "Dubai-based road transport company for heavy truck cargo and raw materials. Deliveries across the UAE, Oman, Saudi Arabia and the GCC.";
+  "Dubai-based road transport company operating across the GCC: UAE, Oman, Saudi Arabia, Qatar, Kuwait and Bahrain. Any cargo, specialised in building raw materials.";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -102,14 +102,22 @@ const schema = {
         addressLocality: "Dubai",
         addressCountry: "AE",
       },
-      areaServed: ["AE", "OM", "SA"],
+      areaServed: ["AE", "OM", "SA", "QA", "KW", "BH"],
       priceRange: "$$",
     },
     {
       "@type": "Service",
       name: "Heavy truck cargo and raw materials transport",
       provider: { "@type": "Organization", name: company.legalName },
-      areaServed: ["United Arab Emirates", "Oman", "Saudi Arabia", "GCC"],
+      areaServed: [
+        "United Arab Emirates",
+        "Oman",
+        "Saudi Arabia",
+        "Qatar",
+        "Kuwait",
+        "Bahrain",
+        "GCC",
+      ],
       serviceType: company.activities,
     },
   ],
@@ -118,7 +126,7 @@ const schema = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${manrope.variable} ${inter.variable}`}>
-      <body className="font-body antialiased pb-[calc(3.5rem+env(safe-area-inset-bottom,0px))] md:pb-0">
+      <body className="font-body antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}

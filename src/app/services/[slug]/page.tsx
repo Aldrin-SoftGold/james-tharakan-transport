@@ -28,11 +28,11 @@ export default async function ServicePage({ params }: Props) {
 
   return (
     <>
-      <header className="bg-ink text-white pt-32 md:pt-40 pb-16">
-        <div className="site-grid grid gap-10 lg:grid-cols-12 items-end">
-          <div className="lg:col-span-7">
+      <header className="bg-ink text-white pt-24 md:pt-40 pb-12 md:pb-16">
+        <div className="site-grid grid gap-8 lg:grid-cols-12 items-end">
+          <div className="lg:col-span-7 min-w-0">
             <p className="label text-white/45">{service.number} / Services</p>
-            <h1 className="display text-[clamp(2.4rem,5.2vw,4.7rem)] mt-5">{service.title}</h1>
+            <h1 className="display text-[clamp(2rem,8vw,4.7rem)] mt-5">{service.title}</h1>
             <p className="lede mt-8 text-white/70">{service.description}</p>
             <div className="mt-10">
               <Button href="/quote">Request a Quote</Button>

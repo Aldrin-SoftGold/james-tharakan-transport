@@ -45,7 +45,7 @@ export function isHoneypotTripped(website?: string, startedAt?: string) {
   if (website && website.trim().length > 0) return true;
   if (startedAt) {
     const started = Number(startedAt);
-    if (!Number.isNaN(started) && Date.now() - started < 1800) return true;
+    if (!Number.isNaN(started) && Date.now() - started < 400) return true;
   }
   return false;
 }

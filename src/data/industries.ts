@@ -33,7 +33,7 @@ export const industries: Industry[] = [
   {
     id: "trading",
     title: "Trading Companies",
-    summary: "Road movement across the UAE, Oman, Saudi Arabia and the GCC for traders moving goods by truck.",
+    summary: "Road movement across the GCC for traders moving goods by truck.",
     image: "/images/industries/trading.jpg",
     imageAlt: "Road freight movement associated with regional trading",
   },

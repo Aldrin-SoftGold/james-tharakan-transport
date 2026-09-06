@@ -33,6 +33,6 @@ export const whyUs = [
     id: "border",
     line1: "Cross-border",
     line2: "experience.",
-    body: "Deliveries across the UAE, Oman, Saudi Arabia and the GCC.",
+    body: "The company operates across the GCC: UAE, Oman, Saudi Arabia, Qatar, Kuwait and Bahrain.",
   },
 ] as const;

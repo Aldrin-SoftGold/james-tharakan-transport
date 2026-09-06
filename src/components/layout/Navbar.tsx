@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { company, primaryPhone } from "@/data/company";
+import { company, primaryPhone, primaryWhatsApp } from "@/data/company";
 import { nav } from "@/data/contact";
+import { pauseLenis, resumeLenis } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -25,12 +26,18 @@ export function Navbar() {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    document.body.dataset.menuOpen = open ? "true" : "";
+    if (open) pauseLenis();
+    else resumeLenis();
     return () => {
       document.body.style.overflow = "";
+      delete document.body.dataset.menuOpen;
+      resumeLenis();
     };
   }, [open]);
 
   return (
+    <>
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-500 pt-[env(safe-area-inset-top,0px)]",
@@ -45,7 +52,7 @@ export function Navbar() {
             width={168}
             height={74}
             priority
-            className="h-10 w-auto md:h-12"
+            className="h-9 w-auto sm:h-10 md:h-12"
           />
           <span
             className={cn(
@@ -81,7 +88,7 @@ export function Navbar() {
         <button
           type="button"
           className={cn(
-            "md:hidden text-[0.72rem] tracking-[0.18em] uppercase font-medium",
+            "md:hidden min-h-11 min-w-11 text-[0.72rem] tracking-[0.18em] uppercase font-medium",
             inverted ? "text-ink" : "text-white",
           )}
           aria-expanded={open}
@@ -91,6 +98,7 @@ export function Navbar() {
           {open ? "Close" : "Menu"}
         </button>
       </div>
+    </header>
 
       <AnimatePresence>
         {open ? (
@@ -100,9 +108,14 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden fixed inset-0 top-[4.5rem] bg-offwhite overflow-y-auto"
+            className="md:hidden fixed inset-0 top-[calc(4.5rem+env(safe-area-inset-top,0px))] z-[45] bg-offwhite"
           >
-            <div className="site-grid py-10 flex flex-col gap-6">
+            <div
+              id="mobile-menu-scroll"
+              data-lenis-prevent
+              className="h-full overflow-y-auto overscroll-y-contain touch-pan-y [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            >
+            <div className="site-grid py-10 pb-28 flex flex-col gap-6">
               {nav.mobile.map((item, i) => (
                 <motion.div
                   key={item.href}
@@ -129,10 +142,19 @@ export function Navbar() {
               <a href={primaryPhone.href} className="text-royal text-lg font-medium tracking-tight">
                 {primaryPhone.display}
               </a>
+              <a
+                href={primaryWhatsApp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-royal text-lg font-medium tracking-tight"
+              >
+                WhatsApp
+              </a>
+            </div>
             </div>
           </motion.div>
         ) : null}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

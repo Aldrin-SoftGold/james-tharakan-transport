@@ -47,6 +47,16 @@ body {
   overflow-x: clip;
 }
 
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  body[data-cta="off"] {
+    padding-bottom: 0;
+  }
+}
+
 ::selection {
   background: var(--color-royal);
   color: white;
@@ -62,11 +72,12 @@ body {
 }
 
 .site-grid {
-  --page-gutter: clamp(1rem, 5vw, 5.5rem);
-  width: min(1440px, calc(100% - (2 * var(--page-gutter))));
+  --page-gutter: clamp(1.15rem, 2.8vw, 2.25rem);
+  width: 100%;
   max-width: 100%;
   margin-inline: auto;
-  padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px);
+  padding-inline: max(var(--page-gutter), env(safe-area-inset-left, 0px))
+    max(var(--page-gutter), env(safe-area-inset-right, 0px));
 }
 
 @media (max-width: 389px) {
@@ -79,10 +90,17 @@ body {
   font-family: var(--font-heading);
   font-weight: 800;
   letter-spacing: -0.045em;
-  line-height: 0.92;
+  line-height: 1.04;
   text-wrap: balance;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
   max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .display {
+    line-height: 0.92;
+  }
 }
 
 img,
@@ -97,7 +115,8 @@ iframe {
 
 main {
   min-width: 0;
-  overflow-x: visible;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .materials-head .display {
@@ -108,7 +127,9 @@ main {
 #materials .pin-spacer,
 #industries,
 #industries .pin-spacer {
+  --page-gutter: clamp(1.15rem, 2.8vw, 2.25rem);
   background: #111318;
+  max-width: 100%;
 }
 
 .label {
@@ -121,8 +142,8 @@ main {
 }
 
 .lede {
-  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-  line-height: 1.65;
+  font-size: clamp(0.98rem, 1.6vw, 1.25rem);
+  line-height: 1.6;
   color: var(--color-muted);
   max-width: 38rem;
 }
@@ -242,6 +263,7 @@ select {
   top: calc(100% + 0.55rem);
   left: 0;
   width: min(100%, 20.5rem);
+  max-width: 100%;
   padding: 1rem 1rem 0.85rem;
   background: #fff;
   border: 1px solid #d5d6db;
@@ -335,6 +357,13 @@ select {
   opacity: 0.35;
   touch-action: none;
   transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), width 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 767px) {
+  body[data-menu-open="true"] .site-scrollbar {
+    display: none;
+    pointer-events: none;
+  }
 }
 
 .site-scrollbar[data-active="true"],

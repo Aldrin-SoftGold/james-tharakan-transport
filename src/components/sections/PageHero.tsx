@@ -12,13 +12,13 @@ export function PageHero({ eyebrow, title, titleLine2, lede, dark }: Props) {
   return (
     <header
       className={cn(
-        "pt-28 md:pt-32 pb-6 md:pb-8",
+        "pt-24 md:pt-32 pb-5 md:pb-8",
         dark ? "bg-ink text-white" : "bg-offwhite",
       )}
     >
       <div className="site-grid max-w-5xl">
         <p className={cn("label", dark && "text-white/45")}>{eyebrow}</p>
-        <h1 className="display text-[clamp(2.55rem,6vw,5.4rem)] mt-3 leading-[1.05]">
+        <h1 className="display text-[clamp(2.1rem,8vw,5.4rem)] mt-3 leading-[1.08]">
           {title}
           {titleLine2 ? (
             <>

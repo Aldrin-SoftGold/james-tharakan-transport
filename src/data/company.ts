@@ -40,8 +40,11 @@ export const company = {
     "Cargo Transport by Heavy Trucks",
     "Raw Materials Transport by Road",
   ],
-  corridors: ["UAE", "Oman", "Saudi Arabia", "GCC"],
-  deliveryLine: "UAE. Oman. Saudi Arabia and GCC",
+  corridors: ["UAE", "Oman", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain"],
+  deliveryLine: "UAE. Oman. Saudi Arabia. Qatar. Kuwait. Bahrain",
+  operateLine: "The company operates across the GCC",
+  specialityLine:
+    "Although the company moves any kind of cargo, it is specialised in building raw materials.",
   copyrightYear: 2026,
   placeholders: {
     yearsInOperation: "[CONFIRM YEARS IN OPERATION]",
@@ -56,3 +59,4 @@ export const company = {
 } as const;
 
 export const primaryPhone = company.phones[0];
+export const primaryWhatsApp = company.phones[0].whatsapp;

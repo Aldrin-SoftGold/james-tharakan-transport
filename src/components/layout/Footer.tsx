@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { company, primaryPhone } from "@/data/company";
+import { company, primaryPhone, primaryWhatsApp } from "@/data/company";
 import { nav } from "@/data/contact";
 
 export function Footer() {
   return (
     <footer className="bg-ink text-white">
-      <div className="site-grid py-16 md:py-20 grid gap-12 md:grid-cols-12">
+      <div className="site-grid border-t border-white/10 pt-10 md:pt-12 pb-10 grid gap-12 md:grid-cols-12">
         <div className="md:col-span-5">
           <Image
             src="/brand/logo-mark.png"
@@ -18,12 +18,12 @@ export function Footer() {
           <p className="mt-6 font-heading font-bold text-lg tracking-tight">
             {company.legalName}
           </p>
-          <p className="mt-3 text-sm text-white/55 leading-relaxed max-w-xs">
-            Cargo Transport
-            <br />
-            Raw Materials Transport
+          <p className="mt-3 text-sm text-white/55 leading-relaxed max-w-sm">
+            Operates across the GCC
             <br />
             {company.deliveryLine}
+            <br />
+            Any cargo. Specialised in building raw materials.
           </p>
         </div>
 
@@ -40,15 +40,23 @@ export function Footer() {
         </nav>
 
         <div className="md:col-span-4 text-sm text-white/70 leading-relaxed">
-          <a href={primaryPhone.href} className="block text-white text-lg mb-4">
+          <a href={primaryPhone.href} className="block text-white text-lg mb-3">
             {primaryPhone.display}
+          </a>
+          <a
+            href={primaryWhatsApp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-white text-lg mb-4 hover:text-ochre transition-colors"
+          >
+            WhatsApp
           </a>
           <p>
             {company.address.line2}
             <br />
             {company.address.city}, {company.address.country}
           </p>
-          <a href={`mailto:${company.email}`} className="mt-4 inline-block hover:text-white">
+          <a href={`mailto:${company.email}`} className="mt-4 inline-block break-all hover:text-white">
             {company.email}
           </a>
         </div>

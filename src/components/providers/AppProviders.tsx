@@ -40,9 +40,12 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       gsap.registerPlugin(ScrollTrigger);
       registerScrollTrigger(ScrollTrigger);
       const lenis = new Lenis({
-        duration: 1.1,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        lerp: 0.075,
         smoothWheel: true,
+        wheelMultiplier: 0.8,
+        touchMultiplier: 1.1,
+        syncTouch: false,
+        overscroll: true,
       });
       lenis.on("scroll", ScrollTrigger.update);
       const tickerFn = (time: number) => {

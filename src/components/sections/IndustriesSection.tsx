@@ -24,7 +24,7 @@ export function IndustriesSection() {
       }
     };
     const lockHeight = () => {
-      const height = Math.max(360, window.innerHeight - pinnedStartOffset() + 2);
+      const height = Math.max(360, window.innerHeight - pinnedStartOffset());
       wrap.style.height = `${height}px`;
       wrap.style.minHeight = `${height}px`;
       paintSpacer();
@@ -39,7 +39,7 @@ export function IndustriesSection() {
       if (killed) return;
       gsap.registerPlugin(ScrollTrigger);
       registerScrollTrigger(ScrollTrigger);
-      const distance = track.scrollWidth - window.innerWidth + 80;
+      const distance = Math.max(0, track.scrollWidth - wrap.clientWidth);
       ctx = gsap.context(() => {
         gsap.to(track, {
           x: -distance,
@@ -52,7 +52,7 @@ export function IndustriesSection() {
             pinSpacing: true,
             scrub: 0.85,
             invalidateOnRefresh: true,
-            anticipatePin: 1,
+            anticipatePin: 0,
             onRefresh: lockHeight,
             onToggle: paintSpacer,
           },
@@ -73,36 +73,47 @@ export function IndustriesSection() {
   }, []);
 
   return (
-    <section id="industries" className="bg-ink text-white">
+    <section
+      id="industries"
+      className="bg-ink text-white overflow-x-clip [box-shadow:0_64px_0_#111318]"
+    >
       <div
         ref={wrapRef}
-        className="overflow-hidden bg-ink md:min-h-dvh md:flex md:flex-col [box-shadow:0_16px_0_#111318]"
+        className="w-full min-w-0 max-w-full overflow-hidden bg-ink flex flex-col h-auto md:h-[calc(100dvh-5.25rem)]"
       >
-        <div className="site-grid pt-8 md:pt-10 shrink-0">
-          <SectionHeading light eyebrow="Industries" title="Who we" titleLine2="move for" />
+        <div className="site-grid pt-5 md:pt-6 shrink-0">
+          <SectionHeading
+            light
+            className="[&_.label]:mb-3 [&_.display]:text-[clamp(1.7rem,3.8vw,3.1rem)]"
+            eyebrow="Industries"
+            title="Who we"
+            titleLine2="move for"
+          />
         </div>
         <div
           ref={trackRef}
-          className="flex flex-col md:flex-row md:flex-nowrap gap-4 md:gap-5 px-[5vw] pt-8 pb-0 md:w-max md:flex-1 md:min-h-0 md:items-stretch"
+          className="flex flex-col md:flex-row md:flex-nowrap gap-3 md:gap-4 px-[max(var(--page-gutter,1.15rem),env(safe-area-inset-left,0px))] pt-4 pb-5 md:w-max md:flex-1 md:min-h-0 md:items-stretch"
         >
           {industries.map((item) => (
             <article
               key={item.id}
-              className="relative w-full aspect-[16/11] md:aspect-auto md:h-full md:w-auto md:min-w-[280px] overflow-hidden"
+              className="relative w-full aspect-[16/11] md:aspect-auto md:h-full md:w-[min(34vw,22rem)] md:min-w-[16.5rem] overflow-hidden"
             >
               <Image
                 src={item.image}
                 alt={item.imageAlt}
                 fill
                 className="object-cover"
-                sizes="(max-width: 768px) 100vw, 42vw"
+                sizes="(max-width: 768px) 100vw, 34vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
-              <div className="absolute bottom-0 p-7 md:p-9">
-                <h3 className="font-heading font-extrabold text-[clamp(1.55rem,2.6vw,2.4rem)] tracking-tight leading-none">
+              <div className="absolute bottom-0 p-5 md:p-7">
+                <h3 className="font-heading font-extrabold text-[clamp(1.35rem,2.2vw,2rem)] tracking-tight leading-none">
                   {item.title}
                 </h3>
-                <p className="mt-3 max-w-md text-white/75">{item.summary}</p>
+                <p className="mt-2 max-w-md text-sm md:text-base text-white/75">
+                  {item.summary}
+                </p>
               </div>
             </article>
           ))}

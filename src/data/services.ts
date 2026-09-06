@@ -12,21 +12,8 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    id: "heavy-truck",
-    number: "01",
-    slug: "heavy-truck-cargo",
-    title: "Heavy Truck Cargo Transport",
-    shortTitle: "Heavy Truck Cargo",
-    summary:
-      "Road movement of heavy cargo with equipment suited to demanding loads and long corridor work.",
-    description:
-      "We move heavy cargo by road across the UAE, Oman, Saudi Arabia and the GCC. The work is practical: matching the vehicle to the load, securing it properly, and delivering it without drama. This is not a desk service. It is road transport, handled by people who have done the driving.",
-    image: "/images/services/heavy-cargo.jpg",
-    imageAlt: "Heavy truck on an open highway, representative of road cargo transport",
-  },
-  {
     id: "materials",
-    number: "02",
+    number: "01",
     slug: "raw-building-materials",
     title: "Raw & Building Materials Transport",
     shortTitle: "Building Materials",
@@ -38,15 +25,28 @@ export const services: Service[] = [
     imageAlt: "Concrete and site materials being worked on a construction job",
   },
   {
+    id: "heavy-truck",
+    number: "02",
+    slug: "heavy-truck-cargo",
+    title: "Heavy Truck Cargo Transport",
+    shortTitle: "Heavy Truck Cargo",
+    summary:
+      "Road movement of heavy cargo with equipment suited to demanding loads and long corridor work.",
+    description:
+      "The company operates across the GCC — UAE, Oman, Saudi Arabia, Qatar, Kuwait and Bahrain. Although it moves any kind of cargo, it is specialised in building raw materials. The work is practical: matching the vehicle to the load, securing it properly, and delivering it without drama.",
+    image: "/images/services/heavy-cargo.jpg",
+    imageAlt: "Heavy truck on an open highway, representative of road cargo transport",
+  },
+  {
     id: "gcc",
     number: "03",
     slug: "cross-border-gcc",
     title: "Cross-Border GCC Transport",
     shortTitle: "Cross-Border GCC",
     summary:
-      "Cross-border road deliveries across the UAE, Oman, Saudi Arabia and the GCC.",
+      "Cross-border road deliveries across the GCC: UAE, Oman, Saudi Arabia, Qatar, Kuwait and Bahrain.",
     description:
-      "Cross-border deliveries run across the UAE, Oman, Saudi Arabia and the GCC. Border formalities, papers and driver realities are part of the job — understood from the road, not from a brochure.",
+      "The company operates across the GCC — UAE, Oman, Saudi Arabia, Qatar, Kuwait and Bahrain. Border formalities, papers and driver realities are part of the job — understood from the road, not from a brochure.",
     image: "/images/services/cross-border.jpg",
     imageAlt: "A driver on the road at dusk — the corridor work of cross-border transport",
   },

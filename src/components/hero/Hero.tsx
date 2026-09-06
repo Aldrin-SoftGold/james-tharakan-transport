@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
+import { primaryWhatsApp } from "@/data/company";
 import { prefersReducedMotion, shouldLoadHeroVideo } from "@/lib/utils";
 
 export function Hero() {
@@ -71,7 +72,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={rootRef} className="relative min-h-[100svh] max-md:min-h-[100dvh] bg-ink text-white overflow-x-clip">
+    <section ref={rootRef} className="relative h-[100svh] min-h-[36rem] bg-ink text-white overflow-x-clip">
       <div data-hero-media className="absolute inset-0">
         <Image
           src="/hero/hero-poster.jpg"
@@ -98,16 +99,16 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/30" />
       </div>
 
-      <div className="relative site-grid min-h-[100svh] max-md:min-h-[100dvh] flex flex-col justify-end gap-6 md:gap-8 pb-24 pt-[7.5rem] max-[380px]:pt-24 max-[380px]:pb-20">
+      <div className="relative site-grid h-full flex flex-col justify-end gap-4 md:gap-5 pt-[6.5rem] max-[380px]:pt-20 pb-[calc(5.75rem+env(safe-area-inset-bottom,0px))] md:pb-16">
         <div className="w-full max-w-[min(100%,42rem)] md:max-w-5xl min-w-0">
-          <h1 className="display text-[clamp(1.95rem,7.6vw,2.9rem)] md:text-[clamp(3rem,5.6vw,5.5rem)] !leading-[1.08]">
+          <h1 className="display text-[clamp(1.85rem,8vw,2.5rem)] md:text-[clamp(2.6rem,5vw,4.6rem)] !leading-[1.08]">
             <span data-hero-line className="block">
               Moving
             </span>
             <span data-hero-line className="block">
               materials.
             </span>
-            <span data-hero-line className="block mt-2 md:mt-4">
+            <span data-hero-line className="block mt-1.5 md:mt-3">
               Moving
             </span>
             <span data-hero-line className="block">
@@ -116,16 +117,15 @@ export function Hero() {
           </h1>
           <p
             data-hero-support
-            className="mt-5 md:mt-8 text-[1.02rem] md:text-xl text-white/75 max-w-md leading-relaxed"
+            className="mt-4 md:mt-5 text-[0.95rem] md:text-lg text-white/75 max-w-xl leading-snug text-pretty"
           >
-            Heavy transport across
-            <br />
-            UAE, Oman, Saudi Arabia and the GCC.
+            Operates across the GCC — UAE, Oman, Saudi Arabia, Qatar, Kuwait and
+            Bahrain. Any cargo. Specialised in building raw materials.
           </p>
-          <div data-hero-ctas className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4">
+          <div data-hero-ctas className="mt-6 md:mt-7 flex flex-col sm:flex-row gap-3">
             <Button href="/quote">Request a Quote</Button>
-            <Button href="/services" variant="secondary">
-              Explore our services
+            <Button href={primaryWhatsApp} variant="secondary" external>
+              WhatsApp
             </Button>
           </div>
         </div>

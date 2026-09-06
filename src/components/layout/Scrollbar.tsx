@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { scrollToY } from "@/lib/scroll";
+import { activeScroller, scrollToY } from "@/lib/scroll";
 
 export function Scrollbar() {
   const thumbRef = useRef<HTMLDivElement>(null);
@@ -15,12 +15,13 @@ export function Scrollbar() {
     if (!thumb || !track) return;
 
     const metrics = () => {
-      const root = document.documentElement;
-      const view = window.innerHeight;
-      const scrollable = root.scrollHeight - view;
+      const menu = activeScroller();
+      const view = menu ? menu.clientHeight : window.innerHeight;
+      const scrollHeight = menu ? menu.scrollHeight : document.documentElement.scrollHeight;
+      const scrollable = scrollHeight - view;
       const trackH = track.clientHeight;
-      const thumbH = Math.max(56, scrollable <= 0 ? trackH : (view / root.scrollHeight) * trackH);
-      return { scrollable, trackH, thumbH, view };
+      const thumbH = Math.max(56, scrollable <= 0 ? trackH : (view / scrollHeight) * trackH);
+      return { scrollable, trackH, thumbH, view, menu };
     };
 
     const setIdle = () => {
@@ -32,13 +33,14 @@ export function Scrollbar() {
     };
 
     const update = () => {
-      const { scrollable, trackH, thumbH } = metrics();
+      const { scrollable, trackH, thumbH, menu } = metrics();
       if (scrollable <= 8) {
         track.style.visibility = "hidden";
         return;
       }
       track.style.visibility = "visible";
-      const y = (window.scrollY / scrollable) * (trackH - thumbH);
+      const current = menu ? menu.scrollTop : window.scrollY;
+      const y = (current / scrollable) * (trackH - thumbH);
       thumb.style.height = `${thumbH}px`;
       thumb.style.transform = `translate3d(0, ${Math.max(0, y)}px, 0)`;
     };
@@ -100,7 +102,25 @@ export function Scrollbar() {
       setIdle();
     };
 
+    let menuEl: HTMLElement | null = null;
+    const bindMenu = () => {
+      const next = activeScroller();
+      if (menuEl === next) {
+        update();
+        return;
+      }
+      menuEl?.removeEventListener("scroll", onScroll);
+      menuEl = next;
+      menuEl?.addEventListener("scroll", onScroll, { passive: true });
+      update();
+    };
+    const bindSoon = () => {
+      bindMenu();
+      requestAnimationFrame(bindMenu);
+    };
+
     update();
+    bindSoon();
     thumb.addEventListener("pointerdown", onThumbDown);
     track.addEventListener("pointerdown", onTrackDown);
     thumb.addEventListener("pointermove", onPointerMove);
@@ -108,6 +128,8 @@ export function Scrollbar() {
     thumb.addEventListener("pointercancel", onPointerUp);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", update);
+    const menuWatch = new MutationObserver(bindSoon);
+    menuWatch.observe(document.body, { attributes: true, attributeFilter: ["data-menu-open"] });
     return () => {
       thumb.removeEventListener("pointerdown", onThumbDown);
       track.removeEventListener("pointerdown", onTrackDown);
@@ -116,6 +138,8 @@ export function Scrollbar() {
       thumb.removeEventListener("pointercancel", onPointerUp);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", update);
+      menuEl?.removeEventListener("scroll", onScroll);
+      menuWatch.disconnect();
       window.clearTimeout(idleRef.current);
     };
   }, []);

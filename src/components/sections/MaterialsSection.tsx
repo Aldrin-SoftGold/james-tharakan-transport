@@ -24,7 +24,7 @@ export function MaterialsSection() {
       }
     };
     const lockHeight = () => {
-      const height = Math.max(360, window.innerHeight - pinnedStartOffset() + 2);
+      const height = Math.max(360, window.innerHeight - pinnedStartOffset());
       wrap.style.height = `${height}px`;
       wrap.style.minHeight = `${height}px`;
       paintSpacer();
@@ -39,7 +39,7 @@ export function MaterialsSection() {
       if (killed) return;
       gsap.registerPlugin(ScrollTrigger);
       registerScrollTrigger(ScrollTrigger);
-      const distance = track.scrollWidth - window.innerWidth + 80;
+      const distance = Math.max(0, track.scrollWidth - wrap.clientWidth);
       ctx = gsap.context(() => {
         gsap.to(track, {
           x: -distance,
@@ -52,7 +52,7 @@ export function MaterialsSection() {
             pinSpacing: true,
             scrub: 0.8,
             invalidateOnRefresh: true,
-            anticipatePin: 1,
+            anticipatePin: 0,
             onRefresh: lockHeight,
             onToggle: paintSpacer,
           },
@@ -73,14 +73,18 @@ export function MaterialsSection() {
   }, []);
 
   return (
-    <section id="materials" className="bg-ink text-white">
+    <section
+      id="materials"
+      className="bg-ink text-white overflow-x-clip [box-shadow:0_64px_0_#111318]"
+    >
       <div
         ref={wrapRef}
-        className="overflow-hidden bg-ink md:min-h-dvh md:flex md:flex-col [box-shadow:0_16px_0_#111318]"
+        className="w-full min-w-0 max-w-full overflow-hidden bg-ink flex flex-col h-auto md:h-[calc(100dvh-5.25rem)]"
       >
-        <div className="site-grid pt-8 md:pt-10 materials-head shrink-0">
+        <div className="site-grid pt-5 md:pt-6 materials-head shrink-0">
           <SectionHeading
             light
+            className="[&_.label]:mb-3 [&_.display]:text-[clamp(1.7rem,3.8vw,3.1rem)]"
             eyebrow="What we move"
             title="Building"
             titleLine2="materials."
@@ -88,22 +92,22 @@ export function MaterialsSection() {
         </div>
         <div
           ref={trackRef}
-          className="flex md:flex-nowrap flex-col md:flex-row gap-4 md:gap-5 px-[5vw] pt-8 pb-0 md:w-max md:flex-1 md:min-h-0 md:items-stretch"
+          className="flex flex-col md:flex-row md:flex-nowrap gap-3 md:gap-4 px-[max(var(--page-gutter,1.15rem),env(safe-area-inset-left,0px))] pt-4 pb-5 md:w-max md:flex-1 md:min-h-0 md:items-stretch"
         >
           {materials.map((item) => (
             <article
               key={item.id}
-              className="relative w-full aspect-[4/5] md:aspect-auto md:h-full md:w-auto md:min-w-[240px] overflow-hidden bg-ink group"
+              className="relative w-full aspect-[4/5] md:aspect-auto md:h-full md:w-[min(22vw,15rem)] md:min-w-[12.5rem] overflow-hidden bg-ink group"
             >
               <Image
                 src={item.image}
                 alt={item.imageAlt}
                 fill
                 className="object-cover max-w-none scale-[1.04] transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]"
-                sizes="(max-width: 768px) 100vw, 28vw"
+                sizes="(max-width: 768px) 100vw, 22vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
-              <h3 className="absolute bottom-6 left-6 right-6 font-heading font-extrabold text-2xl tracking-tight">
+              <h3 className="absolute bottom-5 left-5 right-5 font-heading font-extrabold text-xl tracking-tight">
                 {item.name}
               </h3>
             </article>

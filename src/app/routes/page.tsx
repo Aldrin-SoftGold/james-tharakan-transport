@@ -1,23 +1,16 @@
 import type { Metadata } from "next";
 import { RouteMap } from "@/components/sections/RouteMap";
-import { PageHero } from "@/components/sections/PageHero";
 
 export const metadata: Metadata = {
   title: "Routes & Coverage",
   description:
-    "Road deliveries across the UAE, Oman, Saudi Arabia and the GCC.",
+    "The company operates across the GCC: UAE, Oman, Saudi Arabia, Qatar, Kuwait and Bahrain.",
 };
 
 export default function RoutesPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Routes"
-        title="UAE. Oman."
-        titleLine2="Saudi Arabia and GCC."
-        lede="Delivery locations the company operates today: UAE, Oman, Saudi Arabia and the GCC."
-      />
+    <div className="pt-16 md:pt-20">
       <RouteMap />
-    </>
+    </div>
   );
 }

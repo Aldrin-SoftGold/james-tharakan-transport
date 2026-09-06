@@ -20,31 +20,33 @@ export function ServiceItem({ service, active, onEnter }: Props) {
       data-service-item
       className="group block border-t border-black/10 py-8 md:py-10 last:border-b"
     >
-      <div className="grid md:grid-cols-12 gap-6 md:gap-8 items-center">
-        <p
-          className={cn(
-            "md:col-span-2 font-heading font-extrabold text-xl md:text-2xl transition-colors duration-500",
-            active ? "text-ochre" : "text-black/20",
-          )}
-        >
-          {service.number}
-        </p>
-        <div className="md:col-span-5">
-          <h3 className="font-heading font-extrabold text-[clamp(1.5rem,3vw,2.65rem)] tracking-tight leading-[1.05]">
-            {service.title}
-          </h3>
-          <p className="mt-3 max-w-xl text-muted leading-relaxed">{service.summary}</p>
+      <div className="grid md:grid-cols-12 gap-5 md:gap-10 items-center">
+        <div className="md:col-span-6 flex gap-4 md:gap-7 items-start min-w-0">
           <p
             className={cn(
-              "mt-5 text-2xl transition-transform duration-300",
-              active ? "translate-x-1.5 text-royal" : "text-ink/40",
+              "shrink-0 font-heading font-extrabold text-xl md:text-2xl transition-colors duration-500",
+              active ? "text-ochre" : "text-black/20",
             )}
-            aria-hidden
           >
-            →
+            {service.number}
           </p>
+          <div className="min-w-0">
+            <h3 className="font-heading font-extrabold text-[clamp(1.35rem,4.6vw,2.65rem)] tracking-tight leading-[1.12] break-words">
+              {service.title}
+            </h3>
+            <p className="mt-3 max-w-xl text-muted leading-relaxed">{service.summary}</p>
+            <p
+              className={cn(
+                "mt-5 text-2xl transition-transform duration-300",
+                active ? "translate-x-1.5 text-royal" : "text-ink/40",
+              )}
+              aria-hidden
+            >
+              →
+            </p>
+          </div>
         </div>
-        <div className="relative md:col-span-5 aspect-[16/10] overflow-hidden bg-ink/10">
+        <div className="relative md:col-span-6 aspect-[16/10] overflow-hidden bg-ink/10">
           <Image
             src={service.image}
             alt={service.imageAlt}
