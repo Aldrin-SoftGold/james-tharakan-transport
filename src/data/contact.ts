@@ -1,4 +1,4 @@
-import { company, primaryPhone } from "./company";
+import { company, primaryPhone, quoteMailto } from "./company";
 
 export const contact = {
   headline: "Ready to move?",
@@ -31,5 +31,5 @@ export const nav = {
     { label: "Industries", href: "/industries" },
     { label: "Contact", href: "/contact" },
   ],
-  quote: { label: "Request a Quote", href: "/quote" },
+  quote: { label: "Request a Quote", href: quoteMailto },
 } as const;

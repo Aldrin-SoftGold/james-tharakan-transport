@@ -1,4 +1,4 @@
-import { primaryPhone, primaryWhatsApp } from "@/data/company";
+import { primaryPhone, primaryWhatsApp, quoteMailto } from "@/data/company";
 import { Button } from "@/components/ui/Button";
 
 export function ContactSection() {
@@ -11,7 +11,7 @@ export function ContactSection() {
         </h2>
         <p className="mt-5 text-base md:text-xl text-white/70">Let’s talk about your next load.</p>
         <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <Button href="/quote">Request a Quote</Button>
+          <Button href={quoteMailto} external>Request a Quote</Button>
           <Button href={primaryWhatsApp} variant="secondary" external>
             WhatsApp
           </Button>

@@ -8,6 +8,7 @@ type Props = {
   href: string;
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "ghost";
+  size?: "md" | "lg";
   className?: string;
   external?: boolean;
 };
@@ -16,6 +17,7 @@ export function Button({
   href,
   children,
   variant = "primary",
+  size = "md",
   className,
   external,
 }: Props) {
@@ -28,8 +30,14 @@ export function Button({
       "bg-transparent text-ink border border-ink/20 hover:border-royal hover:text-royal",
   }[variant];
 
+  const sizes = {
+    md: "px-6 py-3.5 text-[0.72rem]",
+    lg: "px-9 py-5 text-[0.82rem]",
+  }[size];
+
   const classNames = cn(
-    "group inline-flex items-center justify-center gap-3 w-full sm:w-auto px-6 py-3.5 text-[0.72rem] font-semibold tracking-[0.16em] uppercase rounded-[4px]",
+    "group inline-flex items-center justify-center gap-3 w-full sm:w-auto font-semibold tracking-[0.16em] uppercase rounded-[4px]",
+    sizes,
     styles,
     className,
   );

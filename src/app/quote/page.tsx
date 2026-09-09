@@ -15,6 +15,7 @@ export default function QuotePage() {
         eyebrow="Quote"
         title="Tell us what"
         titleLine2="needs moving."
+        lede="Share the details of your cargo and route and our team can review your requirement."
       />
       <div className="bg-offwhite pb-16 md:pb-24">
         <div className="site-grid">

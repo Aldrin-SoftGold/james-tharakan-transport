@@ -41,7 +41,7 @@ export const company = {
     "Raw Materials Transport by Road",
   ],
   corridors: ["UAE", "Oman", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain"],
-  deliveryLine: "UAE. Oman. Saudi Arabia. Qatar. Kuwait. Bahrain",
+  deliveryLine: "UAE, Oman, Saudi Arabia, Qatar, Kuwait, Bahrain",
   operateLine: "The company operates across the GCC",
   specialityLine:
     "Although the company moves any kind of cargo, it is specialised in building raw materials.",
@@ -60,3 +60,20 @@ export const company = {
 
 export const primaryPhone = company.phones[0];
 export const primaryWhatsApp = company.phones[0].whatsapp;
+
+const quoteSubject = "Quote request — James Tharakan Transport L.L.C";
+const quoteBody = [
+  "Hello,",
+  "",
+  "I would like to request a transport quote.",
+  "",
+  "Cargo:",
+  "Weight / volume:",
+  "Pickup:",
+  "Delivery:",
+  "Required date:",
+  "",
+  "Thank you.",
+].join("\n");
+
+export const quoteMailto = `mailto:${company.email}?subject=${encodeURIComponent(quoteSubject)}&body=${encodeURIComponent(quoteBody)}`;

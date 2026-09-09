@@ -77,12 +77,12 @@ export function Navbar() {
               {item.label}
             </Link>
           ))}
-          <Link
+          <a
             href={nav.quote.href}
             className="inline-flex items-center gap-2 bg-royal text-white text-[0.68rem] font-semibold tracking-[0.16em] uppercase px-4 py-2.5 rounded-[4px] hover:-translate-y-0.5 transition-transform duration-200"
           >
             {nav.quote.label}
-          </Link>
+          </a>
         </nav>
 
         <button
@@ -132,13 +132,13 @@ export function Navbar() {
                   </Link>
                 </motion.div>
               ))}
-              <Link
+              <a
                 href={nav.quote.href}
                 onClick={() => setOpen(false)}
                 className="mt-4 inline-flex items-center justify-center bg-royal text-white text-[0.72rem] tracking-[0.16em] uppercase font-semibold py-4 rounded-[4px]"
               >
                 {nav.quote.label}
-              </Link>
+              </a>
               <a href={primaryPhone.href} className="text-royal text-lg font-medium tracking-tight">
                 {primaryPhone.display}
               </a>

@@ -1,218 +1,39 @@
-"use client";
-
-import { useEffect, useMemo, useState } from "react";
-import { primaryPhone } from "@/data/company";
-import { materials } from "@/data/materials";
-import { quoteSchema } from "@/lib/validation";
+import { quoteMailto } from "@/data/company";
 import { Button } from "@/components/ui/Button";
-import { DateField } from "@/components/ui/DateField";
-import { SelectField } from "@/components/ui/SelectField";
-import { EmailInput, PhoneInput } from "@/components/ui/ConstrainedInputs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { scrollToElement } from "@/lib/scroll";
-
-const cargoOptions = [
-  ...materials.map((m) => m.name),
-  "Mixed building materials",
-  "Heavy cargo — other",
-  "Other",
-];
-
-type Status = "idle" | "submitting" | "success" | "error";
 
 export function QuoteForm({ compact = false }: { compact?: boolean }) {
-  const startedAt = useMemo(() => String(Date.now()), []);
-  const [status, setStatus] = useState<Status>("idle");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    if (status !== "success" && Object.keys(errors).length === 0) return;
-    scrollToElement("quote");
-  }, [status, errors]);
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setErrors({});
-    const form = new FormData(e.currentTarget);
-    const raw = Object.fromEntries(form.entries());
-    const parsed = quoteSchema.safeParse(raw);
-    if (!parsed.success) {
-      const next: Record<string, string> = {};
-      for (const issue of parsed.error.issues) {
-        const key = String(issue.path[0] ?? "form");
-        if (!next[key]) next[key] = issue.message;
-      }
-      setErrors(next);
-      setStatus("idle");
-      return;
-    }
-    setStatus("submitting");
-    try {
-      const res = await fetch("/api/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-      if (!res.ok) throw new Error("failed");
-      setStatus("success");
-      e.currentTarget.reset();
-    } catch {
-      const data = parsed.data;
-      const text = [
-        `Quote request from ${data.name}`,
-        `Cargo: ${data.cargoType}`,
-        `Weight / volume: ${data.weightVolume}`,
-        `Pickup: ${data.pickup}`,
-        `Delivery: ${data.delivery}`,
-        `Date: ${data.date}`,
-        `Phone: ${data.phone}`,
-        `Email: ${data.email}`,
-      ].join("\n");
-      window.open(
-        `https://wa.me/971569161225?text=${encodeURIComponent(text)}`,
-        "_blank",
-        "noopener,noreferrer",
-      );
-      setStatus("success");
-    }
-  }
-
-  if (status === "success") {
-    return (
-      <section
-        id="quote"
-        className={compact ? "py-6" : "bg-offwhite py-24 md:py-32"}
-        role="status"
-        aria-live="polite"
-      >
-        <div className={compact ? "max-w-2xl" : "site-grid max-w-3xl"}>
-          <p className="label text-ochre">Acknowledgement</p>
-          <h2 className="display text-[clamp(2.1rem,4.4vw,3.7rem)] mt-4">
-            Quote has been sent.
-          </h2>
-          <p className="lede mt-6">
-            Your quote request has been sent. We will review the details and contact
-            you.
-          </p>
-          <div className="mt-10">
-            <Button href="/" variant="ghost">
-              Back to home
-            </Button>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section id="quote" className={compact ? "" : "bg-offwhite py-16 md:py-24 lg:py-32"}>
-      <div className={compact ? "" : "site-grid grid gap-10 lg:grid-cols-12 lg:gap-14"}>
+    <section
+      id="quote"
+      className={compact ? "" : "bg-offwhite py-10 md:py-14"}
+    >
+      <div
+        className={
+          compact
+            ? ""
+            : "site-grid flex flex-col gap-6 md:grid md:grid-cols-12 md:items-center md:gap-8"
+        }
+      >
         {!compact ? (
-          <div className="lg:col-span-5">
+          <div className="min-w-0 md:col-span-7">
             <SectionHeading
               eyebrow="Request a quote"
               title="Tell us what"
               titleLine2="needs moving."
             />
-            <p className="lede mt-8">
+            <p className="lede mt-4">
               Share the details of your cargo and route and our team can review your
               requirement.
             </p>
           </div>
         ) : null}
-        <form
-          onSubmit={onSubmit}
-          className={compact ? "mt-6 md:mt-10 space-y-5 md:space-y-7" : "lg:col-span-7 space-y-5 md:space-y-7"}
-          noValidate
-        >
-          <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
-          <input type="hidden" name="startedAt" value={startedAt} />
-
-          <Field label="Cargo type" error={errors.cargoType}>
-            <SelectField
-              name="cargoType"
-              options={cargoOptions}
-              placeholder="Select cargo"
-              required
-            />
-          </Field>
-          <Field label="Weight / volume" error={errors.weightVolume}>
-            <input name="weightVolume" className="field" placeholder="e.g. 20 tonnes or 2 trailers" required />
-          </Field>
-          <div className="grid md:grid-cols-2 gap-7">
-            <Field label="Pickup location" error={errors.pickup}>
-              <input name="pickup" className="field" placeholder="City or site" required />
-            </Field>
-            <Field label="Delivery location" error={errors.delivery}>
-              <input name="delivery" className="field" placeholder="City or site" required />
-            </Field>
-          </div>
-          <Field label="Required date" error={errors.date}>
-            <DateField name="date" required />
-          </Field>
-          <div className="grid md:grid-cols-2 gap-7">
-            <Field label="Name" error={errors.name}>
-              <input name="name" className="field" autoComplete="name" required />
-            </Field>
-            <Field label="Phone" error={errors.phone}>
-              <PhoneInput className="field" required />
-            </Field>
-          </div>
-          <Field label="Email" error={errors.email}>
-            <EmailInput
-              className="field"
-              required
-              onMessage={(message) =>
-                setErrors((current) => {
-                  if (current.email === message) return current;
-                  return { ...current, email: message };
-                })
-              }
-            />
-          </Field>
-
-          <button
-            type="submit"
-            disabled={status === "submitting"}
-            className="inline-flex items-center justify-center gap-3 w-full sm:w-auto bg-royal text-white text-[0.72rem] tracking-[0.16em] uppercase font-semibold px-7 py-4 rounded-[4px] hover:-translate-y-0.5 transition-transform disabled:opacity-60"
-          >
-            {status === "submitting" ? "Sending…" : "Request a Quote"}
-            <span aria-hidden>→</span>
-          </button>
-
-          {status === "error" ? (
-            <div className="border-l-2 border-ochre pl-4" role="alert">
-              <p className="font-heading font-bold text-lg">
-                We couldn’t submit your request.
-              </p>
-              <p className="mt-2 text-muted">
-                Please try again or call us directly.
-              </p>
-              <a href={primaryPhone.href} className="mt-3 inline-block text-royal font-medium">
-                {primaryPhone.display}
-              </a>
-            </div>
-          ) : null}
-        </form>
+        <div className={compact ? "mt-6 md:mt-8" : "md:col-span-5 md:flex md:items-center md:justify-start"}>
+          <Button href={quoteMailto} external size="lg">
+            Request a Quote
+          </Button>
+        </div>
       </div>
     </section>
-  );
-}
-
-function Field({
-  label,
-  error,
-  children,
-}: {
-  label: string;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="block">
-      <span className="label">{label}</span>
-      <div className="mt-1">{children}</div>
-      {error ? <span className="mt-2 block text-sm text-ochre-deep">{error}</span> : null}
-    </div>
   );
 }

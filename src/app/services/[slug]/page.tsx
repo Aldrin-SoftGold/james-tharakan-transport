@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { services } from "@/data/services";
+import { quoteMailto } from "@/data/company";
 import { Button } from "@/components/ui/Button";
 import { QuoteForm } from "@/components/sections/QuoteForm";
 
@@ -35,7 +36,7 @@ export default async function ServicePage({ params }: Props) {
             <h1 className="display text-[clamp(2rem,8vw,4.7rem)] mt-5">{service.title}</h1>
             <p className="lede mt-8 text-white/70">{service.description}</p>
             <div className="mt-10">
-              <Button href="/quote">Request a Quote</Button>
+              <Button href={quoteMailto} external>Request a Quote</Button>
             </div>
           </div>
           <div className="lg:col-span-5 relative aspect-[4/5] overflow-hidden">

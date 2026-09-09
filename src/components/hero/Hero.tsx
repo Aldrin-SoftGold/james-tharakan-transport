@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
-import { primaryWhatsApp } from "@/data/company";
+import { primaryWhatsApp, quoteMailto } from "@/data/company";
 import { prefersReducedMotion, shouldLoadHeroVideo } from "@/lib/utils";
 
 export function Hero() {
@@ -123,7 +123,7 @@ export function Hero() {
             Bahrain. Any cargo. Specialised in building raw materials.
           </p>
           <div data-hero-ctas className="mt-6 md:mt-7 flex flex-col sm:flex-row gap-3">
-            <Button href="/quote">Request a Quote</Button>
+            <Button href={quoteMailto} external>Request a Quote</Button>
             <Button href={primaryWhatsApp} variant="secondary" external>
               WhatsApp
             </Button>
