@@ -5,8 +5,8 @@ import { nav } from "@/data/contact";
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-white">
-      <div className="site-grid border-t border-white/10 pt-10 md:pt-12 pb-10 grid gap-12 md:grid-cols-12">
+    <footer className="bg-paper text-ink">
+      <div className="site-grid border-t border-line pt-10 md:pt-12 pb-10 grid gap-12 md:grid-cols-12">
         <div className="md:col-span-5">
           <Image
             src="/brand/logo-mark.png"
@@ -15,10 +15,10 @@ export function Footer() {
             height={70}
             className="h-12 w-auto"
           />
-          <p className="mt-6 font-heading font-bold text-lg tracking-tight">
+          <p className="mt-6 font-heading font-bold text-lg tracking-tight text-ink">
             {company.legalName}
           </p>
-          <p className="mt-3 text-sm text-white/55 leading-relaxed max-w-sm">
+          <p className="mt-3 text-sm text-muted leading-relaxed max-w-sm">
             Operates across the GCC
             <br />
             {company.deliveryLine}
@@ -32,22 +32,22 @@ export function Footer() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-[0.78rem] tracking-[0.14em] uppercase text-white/70 hover:text-white transition-colors"
+              className="text-[0.78rem] tracking-[0.14em] uppercase text-muted hover:text-royal transition-colors"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="md:col-span-4 text-sm text-white/70 leading-relaxed">
-          <a href={primaryPhone.href} className="block text-white text-lg mb-3">
+        <div className="md:col-span-4 text-sm text-muted leading-relaxed">
+          <a href={primaryPhone.href} className="block text-ink text-lg mb-3 hover:text-royal transition-colors">
             {primaryPhone.display}
           </a>
           <a
             href={primaryWhatsApp}
             target="_blank"
             rel="noopener noreferrer"
-            className="block text-white text-lg mb-4 hover:text-ochre transition-colors"
+            className="block text-ink text-lg mb-4 hover:text-royal transition-colors"
           >
             WhatsApp
           </a>
@@ -56,14 +56,17 @@ export function Footer() {
             <br />
             {company.address.city}, {company.address.country}
           </p>
-          <a href={`mailto:${company.email}`} className="mt-4 inline-block break-all hover:text-white">
+          <a
+            href={`mailto:${company.email}`}
+            className="mt-4 inline-block break-all hover:text-royal transition-colors"
+          >
             {company.email}
           </a>
         </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="site-grid py-6 flex flex-col md:flex-row md:items-center justify-between gap-4 text-[0.72rem] tracking-[0.08em] uppercase text-white/40">
+      <div className="border-t border-line">
+        <div className="site-grid py-6 flex flex-col md:flex-row md:items-center justify-between gap-4 text-[0.72rem] tracking-[0.08em] uppercase text-muted">
           <p>
             Trade Licence / Register No. {company.licenceDisplay}
           </p>

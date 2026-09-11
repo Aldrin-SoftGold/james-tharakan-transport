@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { services } from "@/data/services";
-import { quoteMailto } from "@/data/company";
-import { Button } from "@/components/ui/Button";
-import { QuoteForm } from "@/components/sections/QuoteForm";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -29,17 +26,14 @@ export default async function ServicePage({ params }: Props) {
 
   return (
     <>
-      <header className="bg-ink text-white pt-24 md:pt-40 pb-12 md:pb-16">
-        <div className="site-grid grid gap-8 lg:grid-cols-12 items-end">
+      <header className="bg-paper text-ink min-h-[100svh] flex items-center pt-[calc(4.5rem+1.5rem)] md:pt-[calc(5.25rem+2rem)] pb-12 md:pb-16">
+        <div className="site-grid w-full grid gap-8 lg:grid-cols-12 lg:gap-12 lg:items-center">
           <div className="lg:col-span-7 min-w-0">
-            <p className="label text-white/45">{service.number} / Services</p>
-            <h1 className="display text-[clamp(2rem,8vw,4.7rem)] mt-5">{service.title}</h1>
-            <p className="lede mt-8 text-white/70">{service.description}</p>
-            <div className="mt-10">
-              <Button href={quoteMailto} external>Request a Quote</Button>
-            </div>
+            <p className="label">{service.number} / Services</p>
+            <h1 className="display text-[clamp(2rem,8vw,4.7rem)] mt-5 text-ink">{service.title}</h1>
+            <p className="lede mt-6 md:mt-8 text-muted max-w-2xl">{service.description}</p>
           </div>
-          <div className="lg:col-span-5 relative aspect-[4/5] overflow-hidden">
+          <div className="lg:col-span-5 relative w-full overflow-hidden h-[min(40svh,18rem)] sm:h-[min(42svh,22rem)] lg:h-[min(calc(100svh-14rem),30rem)]">
             <Image
               src={service.image}
               alt={service.imageAlt}
@@ -51,7 +45,6 @@ export default async function ServicePage({ params }: Props) {
           </div>
         </div>
       </header>
-      <QuoteForm />
     </>
   );
 }

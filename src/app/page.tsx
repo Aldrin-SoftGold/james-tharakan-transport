@@ -6,7 +6,6 @@ import { MaterialsSection } from "@/components/sections/MaterialsSection";
 import { RouteMap } from "@/components/sections/RouteMap";
 import { WhyUsSection } from "@/components/sections/WhyUsSection";
 import { IndustriesSection } from "@/components/sections/IndustriesSection";
-import { QuoteForm } from "@/components/sections/QuoteForm";
 import { ContactSection } from "@/components/sections/ContactSection";
 
 export default function HomePage() {
@@ -20,7 +19,6 @@ export default function HomePage() {
       <RouteMap />
       <WhyUsSection />
       <IndustriesSection />
-      <QuoteForm />
       <ContactSection />
     </>
   );

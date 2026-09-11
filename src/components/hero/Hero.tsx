@@ -8,11 +8,57 @@ import { prefersReducedMotion, shouldLoadHeroVideo } from "@/lib/utils";
 
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [useVideo, setUseVideo] = useState(false);
 
   useEffect(() => {
     setUseVideo(shouldLoadHeroVideo());
   }, []);
+
+  useEffect(() => {
+    if (!useVideo) return;
+
+    const section = rootRef.current;
+    const video = videoRef.current;
+    if (!section || !video) return;
+
+    let visible = false;
+
+    const resumeIfNeeded = () => {
+      if (!visible || video.ended) return;
+      void video.play().catch(() => {});
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry?.isIntersecting ?? false;
+        if (visible) resumeIfNeeded();
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(section);
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") resumeIfNeeded();
+    };
+
+    const onPause = () => {
+      if (visible && !video.ended) resumeIfNeeded();
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    video.addEventListener("pause", onPause);
+    video.addEventListener("loadeddata", resumeIfNeeded);
+
+    resumeIfNeeded();
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      video.removeEventListener("pause", onPause);
+      video.removeEventListener("loadeddata", resumeIfNeeded);
+    };
+  }, [useVideo]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -84,13 +130,13 @@ export function Hero() {
         />
         {useVideo ? (
           <video
+            ref={videoRef}
             className="absolute inset-0 h-full w-full object-cover"
             autoPlay
             muted
-            loop
             playsInline
             poster="/hero/hero-poster.jpg"
-            preload="metadata"
+            preload="auto"
           >
             <source src="/hero/hero-truck.mp4" type="video/mp4" />
           </video>

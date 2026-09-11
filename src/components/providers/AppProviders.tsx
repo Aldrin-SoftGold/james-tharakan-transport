@@ -1,11 +1,34 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { prefersReducedMotion } from "@/lib/utils";
-import { setLenis } from "@/lib/scroll";
-import { isInternalRouteChange, killAllScrollTriggers, registerScrollTrigger } from "@/lib/gsap-runtime";
+import { scrollToY, setLenis } from "@/lib/scroll";
+import {
+  isInternalRouteChange,
+  killAllScrollTriggers,
+  refreshScrollTriggers,
+  registerScrollTrigger,
+} from "@/lib/gsap-runtime";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const hasMounted = useRef(false);
+
+  useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      if (!window.location.hash) scrollToY(0);
+    } else {
+      scrollToY(0);
+    }
+
+    const frame = requestAnimationFrame(() => {
+      refreshScrollTriggers();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pathname]);
+
   useEffect(() => {
     const beforeRouteChange = (event: Event) => {
       const target = event.target;
@@ -13,8 +36,12 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       const anchor = target.closest("a");
       if (!anchor || !isInternalRouteChange(anchor)) return;
       killAllScrollTriggers();
+      scrollToY(0);
     };
-    const beforeHistory = () => killAllScrollTriggers();
+    const beforeHistory = () => {
+      killAllScrollTriggers();
+      scrollToY(0);
+    };
 
     document.addEventListener("click", beforeRouteChange, true);
     window.addEventListener("popstate", beforeHistory);
