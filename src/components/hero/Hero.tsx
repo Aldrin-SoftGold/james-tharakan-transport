@@ -22,41 +22,48 @@ export function Hero() {
     const video = videoRef.current;
     if (!section || !video) return;
 
-    let visible = false;
+    let visible = true;
 
-    const resumeIfNeeded = () => {
-      if (!visible || video.ended) return;
+    const keepPlaying = () => {
+      if (!visible) return;
+      if (video.ended) video.currentTime = 0;
       void video.play().catch(() => {});
     };
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         visible = entry?.isIntersecting ?? false;
-        if (visible) resumeIfNeeded();
+        if (visible) keepPlaying();
       },
-      { threshold: 0.2 },
+      { threshold: 0.05 },
     );
     observer.observe(section);
 
     const onVisibilityChange = () => {
-      if (document.visibilityState === "visible") resumeIfNeeded();
+      if (document.visibilityState === "visible") keepPlaying();
     };
 
     const onPause = () => {
-      if (visible && !video.ended) resumeIfNeeded();
+      if (visible) keepPlaying();
     };
 
     document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("pageshow", keepPlaying);
     video.addEventListener("pause", onPause);
-    video.addEventListener("loadeddata", resumeIfNeeded);
+    video.addEventListener("ended", keepPlaying);
+    video.addEventListener("loadeddata", keepPlaying);
+    video.addEventListener("canplay", keepPlaying);
 
-    resumeIfNeeded();
+    keepPlaying();
 
     return () => {
       observer.disconnect();
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("pageshow", keepPlaying);
       video.removeEventListener("pause", onPause);
-      video.removeEventListener("loadeddata", resumeIfNeeded);
+      video.removeEventListener("ended", keepPlaying);
+      video.removeEventListener("loadeddata", keepPlaying);
+      video.removeEventListener("canplay", keepPlaying);
     };
   }, [useVideo]);
 
@@ -134,6 +141,7 @@ export function Hero() {
             className="absolute inset-0 h-full w-full object-cover"
             autoPlay
             muted
+            loop
             playsInline
             poster="/hero/hero-poster.jpg"
             preload="auto"
